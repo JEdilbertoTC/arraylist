@@ -47,20 +47,23 @@ public class ArrayList<T> {
         elements[lastIndex++] = element;
     }
 
-    public void delete(T element) throws NoSuchElementException {
+    public void delete(T element)   {
         for (int index = 0; index < lastIndex; index++) {
             if (elements[index].equals(element)) {
                 delete(index);
-                break;
+                return;
             }
         }
+        throw new NoSuchElementException();
     }
 
-    public void delete(int index) throws IndexOutOfBoundsException  {
+    public void delete(int index)    {
         if (lastIndex - index > 0 && index >= 0) {
             lastIndex--;
             System.arraycopy(elements, index + 1, elements, index, lastIndex - index);
+            return;
         }
+        throw new IndexOutOfBoundsException();
     }
 
     public Iterator getIterator() {
@@ -71,11 +74,14 @@ public class ArrayList<T> {
         return lastIndex;
     }
 
-    public T getAt(int index) throws IndexOutOfBoundsException {
-        return index < lastIndex ? (T)elements[index] : null;
+    public T getAt(int index){
+        if(index < lastIndex){
+            return (T)elements[index];
+        }
+        throw new IndexOutOfBoundsException();
     }
 
-    public void insert(T reference, T newStudent, InsertPosition insertPosition) throws NoSuchElementException {
+    public void insert(T reference, T newStudent, InsertPosition insertPosition)   {
 
         if (lastIndex == elements.length) {
             increaseArraySize();
@@ -94,10 +100,12 @@ public class ArrayList<T> {
                     }
                     elements[index + 1] = newStudent;
                 }
-                break;
+                lastIndex++;
+                return;
             }
         }
-        lastIndex++;
+        throw new NoSuchElementException();
+
     }
 
     private void increaseArraySize() {
